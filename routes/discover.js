@@ -12,10 +12,10 @@ route.get("/like/:imageId", async (req, res, next) => {
 
     let likeValue;
 
-    const imageDetails = await GalleryModel.findById(req.params.imageId);
+    const imageDetails = await GalleryModel.findOne({ _id: imageId });
 
     if (imageDetails) {
-      if (imageDetails.likes == 1) {
+      if (imageDetails.likes) {
         likeValue = 0;
       } else {
         likeValue = 1;
@@ -38,7 +38,7 @@ route.get("/discover/:category/:shuffle", async (req, res, next) => {
   const shuffle = req.params.shuffle;
   const sortByDate = req.query.sortByDate;
   const filterByLike = req.query.filterByLike;
-  
+
   if (!category) {
     res.status(400).send("Bad Request");
   }
