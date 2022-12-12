@@ -33,5 +33,5 @@ const PORT = process.env.PORT || 3000;
 const HOST = process.env.host || "localhost";
 
 app.listen(PORT, () => {
-    console.log(`Shuffle app listening at http://${HOST}:${PORT}`);
+    console.log(` Shuffle app listening at http://${HOST}:${PORT}`);
 });
