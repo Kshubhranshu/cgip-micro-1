@@ -32,6 +32,6 @@ app.use((err, req, res, next) => res.status(500).send("Something went wrong!"));
 const PORT = process.env.PORT || 3000;
 const HOST = process.env.host || "localhost";
 
-app.listen(port, () => {
-    console.log(` Shuffle app listening at http://${HOST}:${PORT}`);
+app.listen(PORT, () => {
+    console.log(`Shuffle app listening at http://${HOST}:${PORT}`);
 });
