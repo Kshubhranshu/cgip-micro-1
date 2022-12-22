@@ -76,4 +76,14 @@ route.get("/discover/:category/:shuffle", async (req, res, next) => {
     }
 });
 
+route.get("/get-all-category", async (req, res, next) => {
+    try {
+        const categories = await CategoryModel.find();
+        res.json(categories);
+    } catch (error) {
+        console.log(error);
+        next(error);
+    }
+});
+
 module.exports = route;

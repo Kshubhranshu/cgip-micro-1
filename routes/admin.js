@@ -13,9 +13,14 @@ route.get("/add-category/:categoryName", async (req, res, next) => {
 
         // write logic for checking duplicate category
 
-        const newCategoryData = { name: categoryName };
-        await CategoryModel.create(newCategoryData);
-        res.send("Category created successfully!");
+        const categoryDetails = CategoryModel.find({ name: categoryName });
+
+        if (categoryDetails) {
+        } else {
+            const newCategoryData = { name: categoryName };
+            await CategoryModel.create(newCategoryData);
+            res.send("Category created successfully!");
+        }
     } catch (error) {
         console.log(error);
         next(error);
