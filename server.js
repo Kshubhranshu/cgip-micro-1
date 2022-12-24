@@ -4,7 +4,9 @@ const express = require("express");
 const cors = require("cors");
 const discover = require("./routes/discover");
 const admin = require("./routes/admin");
+const auth = require("./routes/auth");
 const initializeDatabase = require("./config/db");
+var jwt = require("jsonwebtoken");
 
 const app = express();
 
@@ -24,15 +26,29 @@ app.get("/api/health", (req, res) => {
 });
 
 app.use("/api/admin", admin);
-app.use("/api/discover", authorizeUser, discover);
+// app.use("/api/auth", auth);
+app.use("/api/discover", verifyAuthToken, discover);
 
-function authorizeUser(req, res, next) {
-    if (req.headers.token == "cuvette") {
-        next();
-    } else {
-        res.status(401).send("You are unauthorized to access this route");
+async function verifyAuthToken(req, res, next) {
+    try {
+        const token = req.headers.token;
+        if (!token) {
+            res.status(400).send("Un-authorized to access data!");
+        }
+
+        decoded = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
+        if (decoded) {
+            next();
+        } else {
+            res.status(400).send("Invalid token!");
+        }
+    } catch (err) {
+        console.log(err);
+        res.status(400).send("Invalid token!");
     }
 }
+
+function authorizeUser(req, res, next) {}
 
 app.use((req, res, next) =>
     res.status(404).send("You are looking for something that we not have!")
